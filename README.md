@@ -25,4 +25,16 @@
 
 점수가 깎이면 하는데 의욕이 없어질거같아 마지막 잡았을때 확인가능하게 설정함
 
+#4차과제 핵심:실패를 많이하면 gameover시스템 만들기, 다시시작 만들기
+
+#4차과제 스크린샷
+
+<img width="799" height="487" alt="스크린샷 2026-03-12 130208" src="https://github.com/user-attachments/assets/25488361-db38-4270-80f6-4b8c2d9b497b" />
+<img width="948" height="565" alt="스크린샷 2026-03-12 130251" src="https://github.com/user-attachments/assets/c47a20d1-be87-46db-af58-7b2aba73c10f" />
+
+위에선 친절했다면 아래에선 틀린횟수랑 점수가 실시간으로 바뀌게 바꿈, gmaeover창이 떠도 한번더 도전하거나 끌수있게 추가로 폼제작
+
+
+
+
 
