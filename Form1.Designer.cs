@@ -41,6 +41,8 @@
             Catchbutton.Text = "나를 잡아봐";
             Catchbutton.UseVisualStyleBackColor = true;
             Catchbutton.Click += Catchbutton_Click;
+            Catchbutton.MouseDown += Catchbutton_MouseDown;
+            Catchbutton.MouseUp += Catchbutton_MouseUp;
             Catchbutton.MouseEnter += Catchbutton_MouseEnter;
             // 
             // Form1

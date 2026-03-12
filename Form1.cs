@@ -1,3 +1,7 @@
+using System.Media;
+using System.IO;
+using System.Threading.Tasks;
+
 namespace CatchButton
 {
     public partial class Form1 : Form
@@ -5,29 +9,77 @@ namespace CatchButton
         public Form1()
         {
             InitializeComponent();
-        }
+            //기본 1000점
 
-        private void Catchbutton_MouseEnter(object sender, EventArgs e)
-        {
-            // 1. 난수생성기준비
-            Random rd= new Random();
-            // 2. 가용영역계산(버튼이폼테두리에걸리지않게보호)
-            // ClientSize는타이틀바와테두리를제외한실제흰도화지영역임
-            //버튼이 밖으로 나가지않게하려면 최대좌표는 폼의 가용영역에서 버튼의 크기만큼 빼야함atchbuttonatchbutton
-            int maxX = this.ClientSize.Width - Catchbutton.Width;
-            int maxY= this.ClientSize.Height- Catchbutton.Height;
-            // 3. 랜덤좌표추출(0 ~ 최대가용치사이)
-            int nextX= rd.Next(0, maxX);
-            int nextY= rd.Next(0, maxY);
-            // 4. 위치할당(새로운Point 객체생성)
-            Catchbutton.Location= new Point(nextX, nextY);
-            // 5. 시각적피드백(폼제목표시줄에좌표출력)
-            this.Text= $"버튼위치: ({nextX}, {nextY})";
         }
 
         private void Catchbutton_Click(object sender, EventArgs e)
         {
+            // 잡았을 때(클릭) 사운드 재생
+            PlaySoundAsync("caught.wav");
+            // 버튼 클릭 시 축하 메시지 표시
+            MessageBox.Show("축하합니다~!");
+        }
 
+        private void Catchbutton_MouseEnter(object sender, EventArgs e)
+        {
+            // 도망갈 때(마우스가 들어올 때) 사운드 재생
+            PlaySoundAsync("escape.wav");
+
+            // 1. 난수생성기준비
+            Random rd = new Random();
+            // 2. 가용영역계산(버튼이폼테두리에걸리지않게보호)
+            // ClientSize는타이틀바와테두리를제외한실제흰도화지영역임
+            //버튼이 밖으로 나가지않게하려면 최대좌표는 폼의 가용영역에서 버튼의 크기만큼 빼야함
+            int maxX = this.ClientSize.Width - Catchbutton.Width;
+            int maxY = this.ClientSize.Height - Catchbutton.Height;
+            // 3. 랜덤좌표추출(0 ~ 최대가용치사이)
+            int nextX = rd.Next(0, maxX);
+            int nextY = rd.Next(0, maxY);
+            // 4. 위치할당(새로운Point 객체생성)
+            Catchbutton.Location = new Point(nextX, nextY);
+            // 5. 시각적피드백(폼제목표시줄에좌표출력)
+            this.Text = $"버튼위치: ({nextX}, {nextY})";
+        }
+
+        private void Catchbutton_MouseDown(object sender, MouseEventArgs e)
+        {
+
+         
+          
+        }
+        private void Catchbutton_MouseUp(object sender, MouseEventArgs e)
+        {
+            // 1. 사운드재생
+            // SoundPlayer player = new SoundPlayer("success.wav");
+            // player.Play();
+            // 2. 점수계산
+            // 3. 시각적피드백(폼제목표시줄에점수출력)
+
+        }
+
+        private void PlaySoundAsync(string relativePath)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+                    if (File.Exists(path))
+                    {
+                        using var player = new SoundPlayer(path);
+                        player.PlaySync();
+                    }
+                    else
+                    {
+                        SystemSounds.Asterisk.Play();
+                    }
+                }
+                catch
+                {
+                    SystemSounds.Beep.Play();
+                }
+            });
         }
     }
 }
