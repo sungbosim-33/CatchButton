@@ -7,6 +7,9 @@ namespace CatchButton
     public partial class Form1 : Form
     {
         private int score = 1000;
+        private int misses = 0;
+        private System.Drawing.Size originalButtonSize;
+        private System.Drawing.Point originalButtonLocation;
 
         public Form1()
         {
@@ -14,6 +17,10 @@ namespace CatchButton
             // 기본 점수 초기화
             score = 1000;
             this.Text = $"점수: {score}";
+
+            // 초기 버튼 크기/위치 저장(재시작 시 복원)
+            originalButtonSize = Catchbutton.Size;
+            originalButtonLocation = Catchbutton.Location;
 
         }
 
@@ -66,6 +73,26 @@ namespace CatchButton
 
             // 놓치면 -5점
             score = Math.Max(0, score - 5);
+            // 놓친 횟수 증가
+            misses++;
+            // UI에 점수/놓친횟수 반영
+            this.Text = $"점수: {score} | 놓친횟수: {misses}/20";
+
+            // 20번 놓치면 게임 오버 처리
+            if (misses >= 20)
+            {
+                using var dlg = new GameOverForm();
+                var result = dlg.ShowDialog(this);
+                if (result == System.Windows.Forms.DialogResult.Retry)
+                {
+                    ResetGame();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+                return;
+            }
 
             // 1. 난수생성기준비
             Random rd = new Random();
@@ -121,6 +148,20 @@ namespace CatchButton
                     SystemSounds.Beep.Play();
                 }
             });
+        }
+
+        private void ResetGame()
+        {
+            // 점수/놓친횟수 초기화
+            score = 1000;
+            misses = 0;
+
+            // 버튼 크기/위치 복원
+            Catchbutton.Size = originalButtonSize;
+            Catchbutton.Location = originalButtonLocation;
+
+            // 타이틀 업데이트
+            this.Text = $"점수: {score}";
         }
     }
 }
